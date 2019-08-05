@@ -1,16 +1,16 @@
-require('env2')('./config.env')
+const {
+  Pool
+} = require("pg");
 
-const { Pool } = require('pg')
+require("env2")("./config.env");
 
-const DB_URL = process.env.DB_URL
+const connectionString = process.env.DATABASE_URL;
 
-if (!DB_URL) {
-  throw new Error('environment variable DB_URL must be set ')
+if (!connectionString) {
+  throw new Error("set a DATABASE_URL env variable");
 }
-// const params = url.parse(DB_URL);
 
-const pool = new Pool({
-  connectionString: DB_URL,
-  ssl: !(DB_URL.includes('localhost'))
-})
-module.exports = pool
+module.exports = new Pool({
+  connectionString,
+  ssl: !connectionString.includes("localhost")
+});
